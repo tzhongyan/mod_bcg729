@@ -20,19 +20,17 @@ mod_bcg729.o: bcg729 mod_bcg729.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c mod_bcg729.c
 
 clone_bcg729:
-	if [ ! -d bcg729 ]; then \
-		git clone https://github.com/BelledonneCommunications/bcg729.git; \
+	if [ "$(ls -A bcg729 2> /dev/null)" == "" ]; then \
+		git submodule update --init; \
 	fi
-	pushd bcg729; git fetch; git checkout 1.0.4; popd;
 
 bcg729: clone_bcg729
-	cd bcg729 && sh autogen.sh && CFLAGS=-fPIC ./configure && make && cd ..
+	cd bcg729 && cmake . && make && cd ..
 
 clean:
 	rm -f *.o *.so *.a *.la; cd bcg729 && make clean; cd ..
 
 distclean: clean
-	rm -fR bcg729
 
 install: all
 	/usr/bin/install -c mod_bcg729.so $(INSTALL_PREFIX)/$(FS_MODULES)/mod_bcg729.so
