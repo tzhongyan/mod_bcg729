@@ -1,4 +1,4 @@
 [submodule "bcg729"]
 	path = bcg729
 	url = https://github.com/BelledonneCommunications/bcg729.git
-    branch = tags/1.1.1
+	branch = tags/1.1.1
