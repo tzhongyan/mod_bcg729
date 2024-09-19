@@ -1,6 +1,6 @@
 ################################
 ### FreeSwitch headers files found in libfreeswitch-dev ###
-FS_INCLUDES=/usr/include/freeswitch
+FS_INCLUDES=/home/tzhongyan/git/mod_bcg729/freeswitch-1.10.12/src/include
 FS_MODULES=/usr/lib/freeswitch/mod
 ################################
 
@@ -9,6 +9,7 @@ SHELL := /bin/bash
 PROC?=$(shell uname -m)
 
 CFLAGS=-fPIC -O3 -fomit-frame-pointer -fno-exceptions -Wall -std=c99 -pedantic
+CMAKE := cmake
 
 INCLUDES=-I/usr/include -Ibcg729/include -I$(FS_INCLUDES)
 LDFLAGS=-lm -Wl,-static -Lbcg729/src/ -lbcg729 -Wl,-Bdynamic
@@ -25,7 +26,7 @@ clone_bcg729:
 	fi
 
 bcg729: clone_bcg729
-	cd bcg729 && cmake . -DCMAKE_C_FLAGS="-fPIC" && make && cd ..
+	cd bcg729 && $(CMAKE) . -DENABLE_SHARED=NO -DENABLE_STATIC=YES -DCMAKE_POSITION_INDEPENDENT_CODE=YES && make && cd ..
 
 clean:
 	rm -f *.o *.so *.a *.la; cd bcg729 && make clean; cd ..
